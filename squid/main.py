@@ -1,4 +1,7 @@
 import click
+import os
+import io
+import zipfile
 
 #folder names beginning with an underscore won't be acted upon.
 
@@ -8,8 +11,15 @@ def squid():
 
 @squid.command()
 def extract():
-    pass
+    
     # recursively unzip all files in current directory.
+    
+    cwd = os.getcwd()
+    
+    for root, dirs, files in os.walk(cwd):
+        for name in files:
+            if name[-4:] == '.zip':
+                print('got a zip')
 
 @squid.command()
 def prune():
