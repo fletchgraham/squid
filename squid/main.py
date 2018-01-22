@@ -2,6 +2,7 @@ import click
 import os
 import io
 import zipfile
+import shutil
 
 #folder names beginning with an underscore won't be acted upon.
 
@@ -11,15 +12,28 @@ def squid():
 
 @squid.command()
 def extract():
-    
     # recursively unzip all files in current directory.
     
     cwd = os.getcwd()
-    
-    for root, dirs, files in os.walk(cwd):
-        for name in files:
-            if name[-4:] == '.zip':
-                print('got a zip')
+
+    zips = 1
+    # while there are still zips
+    while zips > 0:
+        zips = 0
+        # walk the current directory
+        for root, dirs, files in os.walk(cwd):
+            for name in files:
+                if name[-4:] == '.zip':
+                    zips += 1
+                    # extract files ending in .zip then delete the zip file
+                    zip = zipfile.ZipFile(os.path.join(root, name))
+                    zip.extractall(root)
+                    os.remove(os.path.join(root, name))
+
+            # delete that annoying extra folder
+            for d in dirs:
+                if d == "__MACOSX":
+                    shutil.rmtree(os.path.join(root, d))
 
 @squid.command()
 def prune():
