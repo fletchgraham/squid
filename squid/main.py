@@ -37,7 +37,14 @@ def extract():
 
 @squid.command()
 def prune():
-    pass
+    cwd = os.getcwd()
+
+    # make a folder in the home directory to copy 3d folders to.
+    home = os.path.expanduser("~")
+    dump = os.path.join(home,'squid')
+    if not os.path.isdir(dump):
+        os.makedirs(dump)
+                
     # copy each folder to the home directory.
     # for each folder: put all images in a folder called textures.
     # if a folder has no obj files, add it to a list and do nothing further
