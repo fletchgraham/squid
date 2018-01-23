@@ -45,6 +45,7 @@ def prune():
     if not os.path.isdir(dump):
         os.makedirs(dump)
 
+    # back up the dirs to the squid folder in user's home
     to_copy = os.listdir(cwd)
     for d in to_copy:
         src = os.path.join(cwd, d)
@@ -53,6 +54,31 @@ def prune():
             if os.path.exists(dst):
                 shutil.rmtree(dst)
             shutil.copytree(src, dst)
+
+    to_sort = os.listdir(cwd)
+    for d in to_sort:
+        img_types = ['jpg', 'jpeg', 'png',
+                     'bmp', 'tif', 'exr',
+                     'hdr', 'psd', 'gif']
+        file_types = ['obj', '3ds', 'mtl',
+                      'fbx', 'dxf', 'stl']
+        imgs = []
+        files = []
+        
+        for root, dirs, files in os.walk(cwd):
+            for name in files:
+                
+                ext = name.split('.')[-1]
+                
+                if ext in img_types:
+                    imgs.append(name)
+                    
+                if ext in file_types:
+                    files.append(name)
+
+        print(imgs)
+        print(files)
+        
     
                 
     # copy each folder to the home directory.
