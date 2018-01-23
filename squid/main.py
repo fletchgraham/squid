@@ -44,6 +44,16 @@ def prune():
     dump = os.path.join(home,'squid')
     if not os.path.isdir(dump):
         os.makedirs(dump)
+
+    to_copy = os.listdir(cwd)
+    for d in to_copy:
+        src = os.path.join(cwd, d)
+        if os.path.isdir(src):
+            dst = os.path.join(dump, d)
+            if os.path.exists(dst):
+                shutil.rmtree(dst)
+            shutil.copytree(src, dst)
+    
                 
     # copy each folder to the home directory.
     # for each folder: put all images in a folder called textures.
